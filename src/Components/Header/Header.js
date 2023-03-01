@@ -42,10 +42,9 @@ const Header = () => {
         <div className="header">
             {
                 cartInfo?.admin && cartInfo.admin === true && <div className="admin_header container">
-                    <Link to="/admin/manage/hot-deal">Upload Hot Deal</Link>
-                    <Link to="/admin/upload/brand">Upload Brand</Link>
-                    <Link to="/admin/upload/product">Upload Product</Link>
-                    <Link to="/admin/upload/campaign">Upload Campaign</Link>
+                   
+                   <Link to="/adminSecure">Admin</Link>
+              
                     {
                         adminSecret.status && <button onClick={clearSecretCode} className="btn secret_code_btn">CLEAR SECRET CODE</button>
                     }

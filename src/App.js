@@ -33,6 +33,7 @@ import HotDealAdmin from './Components/HotDealAdmin/HotDealAdmin';
 import HotDealProductShow from './Components/HotDeal/HotDealProductShow/HotDealProductShow';
 import MNav from './Components/MNav/MNav';
 import Freelancer from './Components/Freelancer/Freelancer';
+import AdminSecure from './Components/AdminSecure';
 
 export const CategoryData = createContext()
 export const UserData = createContext()
@@ -53,7 +54,7 @@ function App() {
   // console.log(cartInfo)
 
   useEffect(() => {
-    fetch(`https://ebandhon-server.up.railway.app/get-categories`)
+    fetch(`http://localhost:5000/get-categories`)
     .then(res => res.json())
     .then(data => {
       setCategories(data)
@@ -61,25 +62,35 @@ function App() {
     )
 
     if(loginData.isSignedIn) {
-      fetch(`https://ebandhon-server.up.railway.app/get-user-data/id?id=${loginData.uid}`)
+      fetch(`http://localhost:5000/get-user-data/id?id=${loginData.uid}`)
       .then(response => response.json())
       .then(data => {
+        console.log('app', data)
         if(loginData.isSignedIn) {
           setCartInfo(data)
+          const newData = data
+          delete(newData.password)
+          newData.isSignedIn = true
+          setLoginData(newData)
         }
       })
     }
     if(signedInUser.isSignedIn) {
-      fetch(`https://ebandhon-server.up.railway.app/get-user-data/id?id=${loginData.uid}`)
+      fetch(`http://localhost:5000/get-user-data/id?id=${loginData.uid}`)
       .then(response => response.json())
       .then(data => {
+        console.log('app', data)
         if(loginData.isSignedIn) {
           setCartInfo(data)
+          const newData = data
+          delete(newData.password)
+          newData.isSignedIn = true
+          setLoginData(newData)
         }
       })
     }
 
-  }, [loginData, signedInUser])
+  }, [signedInUser])
 
   return (
     <UserData.Provider value={[signedInUser, setSignedInUser]}>
@@ -155,6 +166,9 @@ function App() {
                     </PrivateRoute>
                     <Route path="/hot-deal/product/:productId">
                       <HotDealProductShow/>
+                    </Route>
+                    <Route path="/adminSecure">
+                       <AdminSecure/>
                     </Route>
                   </Switch>
                 <MNav/>
